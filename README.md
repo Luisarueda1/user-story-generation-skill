@@ -27,7 +27,7 @@ This is a **portable Claude AI skill** that follows an 8-step Agile workflow to:
 
 ### Option A — Claude Settings › Skills (Recommended)
 
-1. Download `user-story-generation-v2.skill` from [Releases](../../releases/latest)
+1. Download `user-story-generation.skill` from [Releases](../../releases/latest)
 2. Open [Claude.ai](https://claude.ai) → click your avatar → **Settings**
 3. Go to **Capabilities** (or **Skills**)
 4. Click **Add skill** and upload the `.skill` file
@@ -134,7 +134,7 @@ Each story delivers end-to-end user value (not a technical layer). A story is "d
 
 ## Installing the Skill File
 
-Download `user-story-generation-v2.skill` from [Releases](../../releases/latest) and import it via **Claude Settings → Capabilities → Add skill**.
+Download `user-story-generation.skill` from [Releases](../../releases/latest) and import it via **Claude Settings → Capabilities → Add skill**.
 
 ---
 
