@@ -1,454 +1,200 @@
 ---
-name: User Story Generator
-description: Transform requirements, meeting transcripts, or feature requests into structured user stories with acceptance criteria following INVEST principles.
+name: user-story-generation
+description: Transform raw requirements, meeting transcripts, feature requests, or stakeholder conversations into actionable Agile user stories. Use when the user asks to "generate user stories", "convert requirements to user stories", "create user stories from", "transform transcript into stories", or similar phrases. Also use when the user provides requirements documents or meeting notes and explicitly mentions user stories or backlog creation.
 ---
 
-# User Story Generator
+# User Story Generation Skill
 
-> **Portable Prompt** - Works in Claude Web (claude.ai), Claude Code, or any Claude interface.
-> Add this file as Project Knowledge in Claude Web, or use as custom instructions.
+Transform raw requirements into actionable, INVEST-compliant user stories ready for sprint planning.
 
----
+## Core Process
 
-## How to Use
+### Step 1: Analyze Input
 
-**Trigger phrases:**
-- "Generate user stories"
-- "I want to create user stories"
-- "I need to create user stories"
-- "Convert these requirements to user stories"
+Read and understand the provided content:
+- Meeting transcripts or notes
+- Feature requests or requirements documents
+- Stakeholder conversations
+- Product vision statements
 
-**Provide input via:**
-- Conversation (describe features, problems, or paste text)
-- Paste content from files (.txt, .doc, .vtt transcripts)
-- Paste data from Excel/spreadsheets
+### Step 2: Identify Pain Points
 
-**Choose output format:**
-- **CSV** - Copy-paste into Excel or Google Sheets
-- **Markdown table** - For documentation, Notion, GitHub
-- **JSON** - Use with the Python script below to generate `.xlsx` files
+Extract both explicit and implicit pain points:
+- **Explicit**: Directly stated problems in the text
+- **Implicit**: Inferred needs (e.g., request for automation implies manual process is tedious)
 
----
+Consult `references/invest_and_splitting.md` for pain point analysis techniques.
 
-## Purpose
+### Step 3: Generate User Stories
 
-Transform raw requirements, meeting transcripts, feature requests, or stakeholder conversations into actionable user stories that:
-- Follow the standard "As a [user], I want [goal], so that [benefit]" format
-- Include clear acceptance criteria using Given/When/Then patterns
-- Meet INVEST criteria (Independent, Negotiable, Valuable, Estimable, Small, Testable)
-- Are granular enough to complete in 1-3 days of development work
-
----
-
-## Workflow
-
-### Step 1: Gather Input
-
-Collect requirements from:
-- User conversation describing features or problems
-- Pasted text from documents, transcripts, or meeting notes
-- Pasted data from spreadsheets
-
-Ask clarifying questions if:
-- The input source is unclear
-- A project key prefix is needed (e.g., "US-", "PROJ-")
-- The user type or persona is ambiguous
-
-### Step 2: Analyze for Pain Points
-
-Examine input to identify pain points - problems, frustrations, inefficiencies, or unmet needs.
-
-**Look for explicit indicators:**
-| Signal Phrase | Example |
-|---------------|---------|
-| "It's frustrating when..." | "It's frustrating when I have to re-enter my information" |
-| "I wish I could..." | "I wish I could export reports to PDF" |
-| "It takes too long to..." | "It takes too long to find customer records" |
-| "I can't..." | "I can't see my order history" |
-| "There's no way to..." | "There's no way to bulk update items" |
-| "I have to manually..." | "I have to manually calculate totals" |
-
-**Look for implicit indicators:**
-- Workarounds ("We use spreadsheets to track this")
-- Multiple steps for simple tasks ("First I export, then...")
-- Repeated tasks ("Every Monday I have to...")
-- Error-prone processes ("Sometimes the data doesn't match")
-- Missing information ("We don't know when...")
-
-**Business pain indicators:**
-- Revenue loss, time waste, compliance risk, customer complaints
-
-Document each pain point before proceeding.
-
-### Step 3: Extract Requirements
-
-For each pain point, determine:
-- What capability would solve this pain point?
-- Who is the user experiencing this pain?
-- What value does addressing this provide?
-
-Transform pain points into requirement statements.
-
-### Step 4: Deduplicate and Consolidate
-
-Before generating stories, consolidate overlapping requirements:
-
-**Identify duplicates:**
-- Same feature, different wording ("export data" = "download feature")
-- Subset relationships ("filter by date" is subset of "advanced filtering")
-- Complementary requirements ("sort ascending" + "sort descending" = "sorting")
-
-**Consolidation rules:**
-1. Merge same-feature duplicates (keep most specific wording)
-2. Combine subsets into broader story
-3. Group related items under epics
-4. Preserve distinctions when users or contexts differ
-
-**Goal:** One user story per distinct user need.
-
-### Step 5: Apply INVEST Criteria
-
-Evaluate each story against INVEST (Bill Wake, 2003):
-
-| Criterion | Check |
-|-----------|-------|
-| **I**ndependent | Can be developed and delivered separately |
-| **N**egotiable | Details open to discussion; not a contract |
-| **V**aluable | Delivers value to user or business |
-| **E**stimable | Team can estimate the effort required |
-| **S**mall | Completable in 1-3 days (fits in a sprint) |
-| **T**estable | Has clear pass/fail acceptance criteria |
-
-### Step 6: Split Large Stories
-
-Stories too large (epics) must be split using **vertical slicing** - each slice delivers end-to-end functionality.
-
-**Splitting patterns:**
-
-1. **By workflow steps** - Break complex process into individual steps
-2. **By business rules** - Separate different rules (discount types, etc.)
-3. **By data variations** - Different input types (CSV, API, manual)
-4. **By user type** - Different users need different views
-5. **By CRUD** - Create, Read, Update, Delete as separate stories
-6. **Simple/Complex** - Happy path first, then edge cases
-
-**Vertical (correct):**
-```
-1. User can log in with email/password
-2. User can log in with Google SSO
-3. User can reset forgotten password
-```
-
-**Horizontal (avoid):**
-```
-1. Build login database schema
-2. Create login API
-3. Build login UI
-```
-
-### Step 7: Generate User Stories
-
-Format each story:
-
-**Summary:** Brief, action-oriented (5-10 words)
-
-**Description:**
+Create stories using the format:
 ```
 As a [type of user],
 I want [goal/desire],
-So that [benefit/value].
+given [context/constraints],
+so that [benefit/value].
 ```
 
-**Acceptance Criteria:** (2-4 per story)
+**Requirements:**
+- Each story must have a clear pain point it addresses
+- Stories must be Independent, Negotiable, Valuable, Estimable, Small, and Testable (INVEST)
+- Keep stories small enough to complete in 1-3 days
+- Stories should be vertically sliced (not technical layers)
+
+**Acceptance Criteria:**
+For each story, generate 2-4 testable acceptance criteria using Given/When/Then format:
 ```
-Given [precondition]
-When [action]
-Then [expected result]
+- Given [initial context], when [action occurs], then [expected outcome]
+- Given [initial context], when [action occurs], then [expected outcome]
 ```
 
-### Step 8: Output
+Acceptance criteria should:
+- Be specific and testable
+- Cover the main success scenarios
+- Include edge cases where relevant
+- Be clear enough for QA to validate
 
-Ask user for preferred format, then output:
+Consult `references/invest_and_splitting.md` for INVEST criteria details and story-splitting techniques when stories are too large.
 
-**Option A - CSV (for Excel/Google Sheets):**
+### Step 4: Organize Stories
+
+Group related stories into logical categories/epics:
+- By feature area (e.g., "User Authentication", "Payment Processing")
+- By user journey (e.g., "Onboarding", "Checkout Flow")
+- By system component (e.g., "Admin Dashboard", "Mobile App")
+
+### Step 5: Ask for Output Format
+
+Always ask the user which output format they prefer:
+- **CSV**: Best for importing to Excel/Google Sheets
+- **Markdown Table**: Best for documentation, Notion, GitHub
+- **JSON**: Best for programmatic processing or API integration
+- **Excel (.xlsx)**: Best for formatted spreadsheets with styling
+
+Do NOT assume a format - always ask first.
+
+### Step 6: Generate Output
+
+#### Required Columns
+
+Every story must include these seven fields:
+1. **category_epic**: High-level grouping for related stories
+2. **title**: Brief summary (5-10 words)
+3. **user_story**: Complete story in "As a... I want... given... so that..." format
+4. **acceptance_criteria**: 2-4 testable criteria in Given/When/Then format (bullet points)
+5. **requirement**: Original requirement or feature description from input
+6. **pain_point**: The specific problem this story solves
+7. **created_date**: Today's date in YYYY-MM-DD format
+
+#### CSV Format
 ```csv
-Key,Summary,Description,Acceptance Criteria
-US-001,"Search customers by phone","As a support agent, I want to search customers by phone number, so that I can quickly find accounts during calls.","Given I am logged in as a support agent
-When I enter a valid phone number
-Then I see matching customer records"
+Category/Epic,Title,User Story,Acceptance Criteria,Requirement,Pain Point,Created Date
+User Authentication,Login with Email,"As a returning user, I want to log in with my email and password, given I have an existing account, so that I can access my personalized content","- Given valid credentials, when I submit the login form, then I am redirected to my dashboard
+- Given invalid credentials, when I submit the login form, then I see an error message
+- Given I am already logged in, when I navigate to the login page, then I am redirected to my dashboard","Users need to access their accounts","Users cannot access their saved preferences",2026-01-29
 ```
 
-**Option B - Markdown Table:**
-| Key | Summary | Description | Acceptance Criteria |
-|-----|---------|-------------|---------------------|
-| US-001 | Search customers by phone | As a support agent... | Given... When... Then... |
+#### Markdown Table Format
+```markdown
+| Category/Epic | Title | User Story | Acceptance Criteria | Requirement | Pain Point | Created Date |
+|---------------|-------|------------|---------------------|-------------|------------|--------------|
+| User Authentication | Login with Email | As a returning user... | - Given valid credentials, when I submit the login form, then I am redirected to my dashboard<br>- Given invalid credentials, when I submit the login form, then I see an error message | Users need to... | Users cannot... | 2026-01-29 |
+```
 
-**Option C - JSON (for Excel script):**
+#### JSON Format
 ```json
 [
   {
-    "key": "US-001",
-    "summary": "Search customers by phone",
-    "description": "As a support agent, I want to search customers by phone number, so that I can quickly find accounts during calls.",
-    "acceptance_criteria": "Given I am logged in as a support agent\nWhen I enter a valid phone number\nThen I see matching customer records"
+    "category_epic": "User Authentication",
+    "title": "Login with Email",
+    "user_story": "As a returning user, I want to log in with my email and password, given I have an existing account, so that I can access my personalized content",
+    "acceptance_criteria": "- Given valid credentials, when I submit the login form, then I am redirected to my dashboard\n- Given invalid credentials, when I submit the login form, then I see an error message\n- Given I am already logged in, when I navigate to the login page, then I am redirected to my dashboard",
+    "requirement": "Users need to access their accounts",
+    "pain_point": "Users cannot access their saved preferences",
+    "created_date": "2026-01-29"
   }
 ]
 ```
 
----
+#### Excel Format
 
-## Output Columns
+For Excel output:
+1. Generate the JSON format first
+2. Save JSON to a temporary file (e.g., `/home/claude/stories.json`)
+3. Run the Excel generation script with today's date in filename:
+   ```bash
+   cd /home/claude/user-story-generation/scripts
+   python3 generate_excel.py --input /home/claude/stories.json --output /home/claude/$(date +%Y-%m-%d)_userstories.xlsx
+   ```
+4. Move the generated file to outputs:
+   ```bash
+   mv /home/claude/*_userstories.xlsx /mnt/user-data/outputs/
+   ```
+5. Present the Excel file to the user
 
-| Column | Description |
-|--------|-------------|
-| Key | Unique identifier (e.g., US-001, US-002) |
-| Summary | Brief one-line description (5-10 words) |
-| Description | Full user story: "As a... I want... So that..." |
-| Acceptance Criteria | Testable conditions in Given/When/Then format |
+The script automatically applies formatting:
+- Colored header row (blue background, white text)
+- Frozen header for scrolling
+- Wrapped text for readability
+- Optimized column widths
+- Professional borders
+- Seven columns: Category/Epic, Title, User Story, Acceptance Criteria, Requirement, Pain Point, Created Date
 
----
+## Quality Guidelines
 
-## Quality Checklist
-
-Before delivering output, verify:
-- [ ] Each story follows "As a... I want... So that..." format
-- [ ] Acceptance criteria use Given/When/Then structure
-- [ ] Stories are independent and can be developed in any order
-- [ ] Stories are small enough for 1-3 days of work
-- [ ] No duplicate or overlapping stories
-- [ ] All identified pain points are addressed
-- [ ] Keys are unique and follow consistent naming
-
----
-
-## User Story Examples
-
-**Example 1: Search Functionality**
-```
-Key: US-001
-Summary: Search customers by phone number
-
-As a customer support agent,
-I want to search customer records by phone number,
-So that I can quickly pull up account details during calls.
-
-Acceptance Criteria:
-1. Given I am logged in as a support agent
-   When I enter a valid 10-digit phone number
-   Then I see all customer records matching that phone number
-
-2. Given I am logged in as a support agent
-   When I enter a phone number with no matches
-   Then I see "No customers found" with suggestions
-
-3. Given I am logged in as a support agent
-   When I enter a partial phone number (4+ digits)
-   Then I see all records containing those digits
-```
-
-**Example 2: Notification**
-```
-Key: US-002
-Summary: Email alerts for overdue tasks
-
-As a project manager,
-I want to receive email alerts when tasks become overdue,
-So that I can take immediate action to keep projects on track.
-
-Acceptance Criteria:
-1. Given I have notifications enabled
-   When a task I own becomes overdue
-   Then I receive an email within 15 minutes
-
-2. Given I have notifications disabled
-   When a task becomes overdue
-   Then I do not receive an email
-
-3. Given a task is already overdue
-   When 24 hours pass without completion
-   Then I receive a follow-up reminder
-```
-
----
-
-## Pain Point to User Story Transformation
-
-**Pain Point:** "Our sales team wastes 2 hours daily searching through emails to find customer information."
-
-**Analysis:**
-- Pain: Difficulty finding customer information
-- User: Sales team members
-- Goal: Centralized, searchable customer database
-- Value: Save time, faster response to customers
+**Story Title:**
+- Keep to 5-10 words
+- Descriptive and actionable
+- Avoid technical jargon
 
 **User Story:**
-```
-As a sales team member,
-I want to search all customer interactions from a single dashboard,
-So that I can quickly find relevant information without digging through emails.
-```
+- Always use full "As a... I want... given... so that..." format
+- Be specific about user type (admin, customer, guest, etc.)
+- Include meaningful context in "given" clause
+- Articulate clear value in "so that" clause
 
----
+**Acceptance Criteria:**
+- Write 2-4 criteria per story in Given/When/Then format
+- Each criterion should be independently testable
+- Cover main success path and key edge cases
+- Be specific about expected outcomes
+- Use bullet points for readability
+- Example format: "- Given [context], when [action], then [outcome]"
 
-## Common Mistakes to Avoid
+**Requirement:**
+- Extract the original requirement from input text
+- Keep concise but informative
+- Preserve key details from original source
 
-**In User Stories:**
-- Technical implementation ("I want a REST API endpoint...") instead of user goal
-- Vague benefit ("so that things are better") instead of specific value
-- Multiple features in one story - split them
+**Pain Point:**
+- State the specific problem being solved
+- Connect to user or business value
+- One clear pain point per story
 
-**In Acceptance Criteria:**
-- Not testable ("page loads quickly") - use specific metrics
-- Technical details ("stored in PostgreSQL") - describe behavior
-- Too vague ("search works correctly") - be specific
+## Common Patterns
 
----
+**Authentication Stories:**
+- Category: "User Authentication" or "Security"
+- Pain points: Access control, security concerns, user experience
 
-## Python Script for Excel Generation
+**Data Management Stories:**
+- Category: "Data Management" or "[Entity] Management"
+- Pain points: Manual processes, data accuracy, efficiency
 
-Copy this script to generate formatted `.xlsx` files from JSON output:
+**Reporting/Analytics Stories:**
+- Category: "Reporting" or "Analytics"
+- Pain points: Lack of visibility, manual reporting, decision-making delays
 
-```python
-#!/usr/bin/env python3
-"""
-Generate Excel file from user story JSON data.
+**Integration Stories:**
+- Category: "Integrations" or "Third-Party Services"
+- Pain points: Manual data transfer, system disconnects, workflow inefficiency
 
-Usage:
-    python generate_excel.py --output stories.xlsx --input stories.json
-    python generate_excel.py --output stories.xlsx --data '[{"key": "US-001", ...}]'
+## Resources
 
-Dependencies:
-    pip install openpyxl
-"""
+- **INVEST Criteria & Story Splitting**: `references/invest_and_splitting.md`
+- **Excel Generation Script**: `scripts/generate_excel.py`
 
-import argparse
-import json
-import sys
-
-try:
-    from openpyxl import Workbook
-    from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
-    from openpyxl.utils import get_column_letter
-except ImportError:
-    print("Error: openpyxl is required. Install with: pip install openpyxl")
-    sys.exit(1)
-
-
-def create_user_stories_excel(stories: list, output_path: str) -> str:
-    """Create a formatted Excel file from user story data."""
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "User Stories"
-
-    headers = ["Key", "Summary", "Description", "Acceptance Criteria"]
-
-    # Styles
-    header_font = Font(bold=True, size=12, color="FFFFFF")
-    header_fill = PatternFill(start_color="4472C4", end_color="4472C4", fill_type="solid")
-    header_alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-    cell_alignment = Alignment(vertical="top", wrap_text=True)
-    thin_border = Border(
-        left=Side(style="thin"), right=Side(style="thin"),
-        top=Side(style="thin"), bottom=Side(style="thin")
-    )
-
-    # Write headers
-    for col, header in enumerate(headers, 1):
-        cell = ws.cell(row=1, column=col, value=header)
-        cell.font = header_font
-        cell.fill = header_fill
-        cell.alignment = header_alignment
-        cell.border = thin_border
-
-    # Write data
-    for row_idx, story in enumerate(stories, 2):
-        for col, key in enumerate(["key", "summary", "description", "acceptance_criteria"], 1):
-            cell = ws.cell(row=row_idx, column=col, value=story.get(key, ""))
-            cell.alignment = cell_alignment
-            cell.border = thin_border
-
-    # Column widths
-    for col, width in {1: 12, 2: 40, 3: 50, 4: 60}.items():
-        ws.column_dimensions[get_column_letter(col)].width = width
-
-    ws.freeze_panes = "A2"
-    wb.save(output_path)
-    return output_path
-
-
-def main():
-    parser = argparse.ArgumentParser(description="Generate Excel from user story JSON")
-    parser.add_argument("--output", "-o", required=True, help="Output Excel file path")
-    parser.add_argument("--data", "-d", help="JSON string of user stories")
-    parser.add_argument("--input", "-i", help="Path to JSON file")
-
-    args = parser.parse_args()
-
-    if args.input:
-        with open(args.input, "r") as f:
-            stories = json.load(f)
-    elif args.data:
-        stories = json.loads(args.data)
-    else:
-        stories = json.load(sys.stdin)
-
-    if not isinstance(stories, list):
-        print("Error: Data must be a JSON array")
-        sys.exit(1)
-
-    output_path = create_user_stories_excel(stories, args.output)
-    print(f"Created: {output_path} ({len(stories)} stories)")
-
-
-if __name__ == "__main__":
-    main()
-```
-
-**To use:**
-1. Save the JSON output from Claude to `stories.json`
-2. Run: `pip install openpyxl`
-3. Run: `python generate_excel.py --input stories.json --output user_stories.xlsx`
-
----
-
-## Agile Best Practices Sources
-
-This workflow is based on established Agile methodologies:
-
-- **Bill Wake** - INVEST criteria (2003)
-- **Mike Cohn** - "User Stories Applied" (2004)
-- **Richard Lawrence** - Story splitting patterns (Humanizing Work)
-- **Scrum Guide** - Schwaber & Sutherland
-- **Agile Alliance** - Industry standards
-
----
-
-## Quick Reference
-
-**Story Template:**
-```
-As a [specific user type],
-I want [one specific goal],
-So that [clear business benefit].
-
-Acceptance Criteria:
-1. Given [context] When [action] Then [outcome]
-2. Given [context] When [action] Then [outcome]
-3. (edge case scenario)
-```
-
-**INVEST Checklist:**
-- [ ] Independent - Can be delivered alone
-- [ ] Negotiable - Open to discussion
-- [ ] Valuable - Delivers user/business value
-- [ ] Estimable - Team can size it
-- [ ] Small - 1-3 days of work
-- [ ] Testable - Has acceptance criteria
-
-**Splitting Decision:**
-1. Too big? → Split by workflow steps
-2. Multiple rules? → Split by business rule variations
-3. Multiple inputs? → Split by data variations
-4. Multiple users? → Split by user type
-5. CRUD operations? → Split by interface
-6. Performance critical? → Split simple/complex
+Load the INVEST reference when you need guidance on:
+- Validating story quality
+- Splitting large stories
+- Understanding pain point analysis
