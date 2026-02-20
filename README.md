@@ -25,20 +25,23 @@ This is a **portable Claude AI skill** that follows an 8-step Agile workflow to:
 
 ## Quick Start
 
-### Option A — Claude Web (Recommended)
+### Option A — Claude Settings › Skills (Recommended)
+
+1. Download `user-story-generation-v2.skill` from [Releases](../../releases/latest)
+2. Open [Claude.ai](https://claude.ai) → click your avatar → **Settings**
+3. Go to **Capabilities** (or **Skills**)
+4. Click **Add skill** and upload the `.skill` file
+5. Start a conversation and say one of the trigger phrases below
+
+### Option B — Claude Web Project Knowledge
 
 1. Open [Claude.ai](https://claude.ai) and create or open a **Project**
 2. Go to **Project Knowledge** → **Add content**
 3. Upload or paste the contents of [`SKILL.md`](SKILL.md)
-4. Start a conversation and say one of the trigger phrases below
-
-### Option B — Claude Code
-
-Add `SKILL.md` as custom instructions or reference it in your project context.
 
 ### Option C — Any Claude Interface
 
-Paste the full contents of `SKILL.md` into your system prompt or at the start of a conversation.
+Paste the full contents of [`SKILL.md`](SKILL.md) into your system prompt or at the start of a conversation.
 
 ---
 
@@ -128,7 +131,7 @@ Each story delivers end-to-end user value (not a technical layer). A story is "d
 
 ## Installing the Skill File
 
-The `.skill` file (ZIP archive) can be downloaded from [Releases](../../releases/latest) and imported directly into compatible skill managers.
+Download `user-story-generation-v2.skill` from [Releases](../../releases/latest) and import it via **Claude Settings → Capabilities → Add skill**.
 
 ---
 
